@@ -6,14 +6,14 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);   // add physics body to scene
 
         // set properties
-        this.direction = direction; 
+        this.direction = direction;
         this.heroVelocity = 110;    // in pixels
         this.dashCooldown = 400;    // in ms
         this.hurtTimer = 480;       // in ms
         this.body.setCollideWorldBounds(true);
         this.body.setAllowGravity(false);
 
-        
+
     }
 }
 
@@ -26,7 +26,7 @@ class IdleState extends State {
     }
 
     execute(scene, hero) {
-        
+
         // use destructuring to make a local copy of the keyboard object
         const { left, right, space, shift } = scene.keys;
         const HKey = scene.keys.HKey;
@@ -43,7 +43,7 @@ class IdleState extends State {
             return;
         }
 
-        // hurt if H key input (just for demo purposes)
+        // hurt if touching monsters
         if(hurting) {
             this.stateMachine.transition('hurt');
             hurting = false;
@@ -63,7 +63,7 @@ class MoveState extends State {
         // use destructuring to make a local copy of the keyboard object
         const { left, right, space, shift } = scene.keys;
         const HKey = scene.keys.HKey;
-        
+
         // transition to swing if pressing space
         if(Phaser.Input.Keyboard.JustDown(space)) {
             this.stateMachine.transition('swing');
@@ -76,9 +76,10 @@ class MoveState extends State {
             return;
         }
 
-        // hurt if H key input (just for demo purposes)
-        if(Phaser.Input.Keyboard.JustDown(HKey)) {
+        // hurt if touching monsters
+        if(hurting) {
             this.stateMachine.transition('hurt');
+            hurting = false;
             return;
         }
 
@@ -90,7 +91,7 @@ class MoveState extends State {
 
         // handle movement
         hero.body.setVelocity(0);
-        
+
         if(left.isDown) {
             hero.body.setVelocityX(-hero.heroVelocity);
             hero.direction = 'left';
