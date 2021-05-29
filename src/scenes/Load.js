@@ -7,9 +7,13 @@ class Load extends Phaser.Scene {
         //load sheets
         this.load.path = './assets/';
         this.load.spritesheet('hero', 'hero-sheet.png', {
-            frameWidth: 48,
-            frameHeight: 64,
+            frameWidth: 32,
+            frameHeight: 32,
         });
+        this.load.spritesheet('pink_eyeball', 'Pink-Eyeball.png', {
+            frameWidth: 32,
+            frameHeight: 32,
+        })
 
         this.load.bitmapFont('gem', 'gem.png', 'gem.xml');
         this.load.image('tower', 'tower.png');

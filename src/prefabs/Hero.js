@@ -6,15 +6,14 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);   // add physics body to scene
 
         // set properties
-        this.direction = direction;
+        this.direction = direction; 
         this.heroVelocity = 110;    // in pixels
-        this.dashCooldown = 400;    // in ms
+        this.dashCooldown = 900;    // in ms
         this.hurtTimer = 480;       // in ms
-        this.body.setCollideWorldBounds(true);
-        this.body.setAllowGravity(false);
-
-
+        this.JUMP_VELOCITY = -390;         
+    
     }
+    
 }
 
 // hero-specific state classes
@@ -26,7 +25,7 @@ class IdleState extends State {
     }
 
     execute(scene, hero) {
-
+        
         // use destructuring to make a local copy of the keyboard object
         const { left, right, space, shift } = scene.keys;
         const HKey = scene.keys.HKey;
@@ -41,9 +40,10 @@ class IdleState extends State {
         if(Phaser.Input.Keyboard.JustDown(shift)) {
             this.stateMachine.transition('dash');
             return;
+            
         }
 
-        // hurt if touching monsters
+        // hurt if H key input (just for demo purposes)
         if(hurting) {
             this.stateMachine.transition('hurt');
             hurting = false;
@@ -63,7 +63,7 @@ class MoveState extends State {
         // use destructuring to make a local copy of the keyboard object
         const { left, right, space, shift } = scene.keys;
         const HKey = scene.keys.HKey;
-
+        
         // transition to swing if pressing space
         if(Phaser.Input.Keyboard.JustDown(space)) {
             this.stateMachine.transition('swing');
@@ -71,15 +71,14 @@ class MoveState extends State {
         }
 
         // transition to dash if pressing shift
-        if(Phaser.Input.Keyboard.JustDown(shift)) {
+        if(Phaser.Input.Keyboard.JustDown(shift) && hero.body.y == 256-64) {
             this.stateMachine.transition('dash');
             return;
         }
 
-        // hurt if touching monsters
-        if(hurting) {
+        // hurt if H key input (just for demo purposes)
+        if(Phaser.Input.Keyboard.JustDown(HKey)) {
             this.stateMachine.transition('hurt');
-            hurting = false;
             return;
         }
 
@@ -91,7 +90,7 @@ class MoveState extends State {
 
         // handle movement
         hero.body.setVelocity(0);
-
+        
         if(left.isDown) {
             hero.body.setVelocityX(-hero.heroVelocity);
             hero.direction = 'left';
@@ -102,6 +101,7 @@ class MoveState extends State {
 
         // handle animation
         hero.anims.play(`walk-${hero.direction}`, true);
+
     }
 }
 
@@ -120,22 +120,40 @@ class SwingState extends State {
 
 class DashState extends State {
     enter(scene, hero) {
-        scene.sound.play('shift');
-        hero.body.setVelocity(0);
-        hero.anims.play(`swing-${hero.direction}`);
-        switch(hero.direction) {
-            case 'left':
-                hero.body.setVelocityX(-hero.heroVelocity * 3);
-                break;
-            case 'right':
-                hero.body.setVelocityX(hero.heroVelocity * 3);
-                break;
+        //scene.sound.play('shift');
+        
+        //hero.anims.play(`swing-${hero.direction}`);
+        // switch(hero.direction) {
+        //     case 'left':
+        //         hero.body.setVelocityY(-hero.heroVelocity * 3);
+        //         break;
+        //     case 'right':
+        //         hero.body.setVelocityY(hero.heroVelocity * 3);
+        //         break;
+        // }
+        //hero.body.setVelocityX(0);
+        const { left, right, space, shift } = scene.keys;
+        //scene.sound.play('shift');
+        if(left.isDown) {
+            hero.body.setVelocityX(-hero.heroVelocity);
+            hero.body.setVelocityY(hero.JUMP_VELOCITY);
+            hero.direction = 'left';
+        } else if(right.isDown) {
+            hero.body.setVelocityX(hero.heroVelocity);
+            hero.body.setVelocityY(hero.JUMP_VELOCITY);
+            hero.direction = 'right';
+        } else{
+            hero.body.setVelocityY(hero.JUMP_VELOCITY);
         }
-
+        //hero.anims.play(`swing-${hero.direction}`);
+        //this.stateMachine.transition('idle');
         // set a short delay before going back to idle
-        scene.time.delayedCall(hero.dashCooldown, () => {
-            this.stateMachine.transition('idle');
+        scene.time.delayedCall(260, () => {
+             this.stateMachine.transition('idle');
         });
+        //hero.body.setVelocityY(this.JUMP_VELOCITY);
+        //this.stateMachine.transition('idle');
+        
     }
 }
 

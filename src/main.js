@@ -12,13 +12,13 @@ const config = {
     parent: 'phaser-game', 
     type: Phaser.AUTO,     
     width: 400,
-    height: 300,
+    height: 256,
     pixelArt: true,
     zoom: 2,
     physics: {
         default: "arcade"
     },
-    scene: [Load, Title, Credit, Menu, Play, Gameover]
+    scene: [Load, Title, Credit, Menu, Play, Gameover, Map1]
 };
 
 // define game
@@ -36,3 +36,9 @@ let gameover = false;
 
 let attacking = false;
 let hurting = false;
+
+let max_hp = 3
+let hp = 3
+
+let MAX_X_VEL = 100;
+let MAX_Y_VEL = 1300;
