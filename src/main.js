@@ -1,13 +1,3 @@
-// Nathan Altice
-// Created: 6/9/20
-// Updated: 4/11/21
-// Finite State Machines
-// CharacterFSM example adapted from mkelly.me/blog/phaser-finite-state-machine
-// refactored for Hero prefab, detangled scene code from hero code, added 'hurt' state
-
-// DE-DANGER
-'use strict';
-
 const config = {
     parent: 'phaser-game', 
     type: Phaser.AUTO,     
@@ -18,8 +8,8 @@ const config = {
     physics: {
         default: "arcade"
     },
-    scene: [Load, Title, Credit, Menu, Play, Gameover, Map1]
-};
+    scene: [Load, Title, Credit, Menu, Map1]
+}
 
 // define game
 const game = new Phaser.Game(config);
@@ -32,13 +22,9 @@ let h = game.config.height;
 const SCALE = 2;
 const textSpacer = 20;
 let cursors;
-let gameover = false;
+//let gameover = false;
 
-let attacking = false;
-let hurting = false;
+//let attacking = false;
 
-let max_hp = 3
-let hp = 3
 
-let MAX_X_VEL = 100;
-let MAX_Y_VEL = 1300;
+let hp = 3;

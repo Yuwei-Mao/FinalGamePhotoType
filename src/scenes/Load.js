@@ -16,10 +16,10 @@ class Load extends Phaser.Scene {
         })
 
         this.load.bitmapFont('gem', 'gem.png', 'gem.xml');
-        this.load.image('tower', 'tower.png');
-        this.load.atlas('monster_atlas', 'monster.png', 'monster.json');
         this.load.image('bg','bg.png')
+        this.load.image('tower','tower.png')
         this.load.image('hider','hider.png')
+        this.load.image('bullet','bullet.png')
 
         //load audio
         this.load.audio('attack','attack.wav');

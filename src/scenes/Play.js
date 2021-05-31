@@ -34,8 +34,8 @@ class Play extends Phaser.Scene {
 
         //add towerblock
 
-        // add new Hero to scene (scene, x, y, key, frame, direction)
-        this.hero = new Hero(this, 200, 250+32-15, 'hero', 0, 'left');
+
+
 
         // initialize state machine managing hero (initial state, possible states, state args[])
         this.heroFSM = new StateMachine('idle', {
@@ -43,7 +43,6 @@ class Play extends Phaser.Scene {
             move: new MoveState(),
             swing: new SwingState(),
             dash: new DashState(),
-            hurt: new HurtState(),
         }, [this, this.hero]);
 
         // hero animations (walking)
@@ -73,10 +72,6 @@ class Play extends Phaser.Scene {
             repeat: 0,
             frames: this.anims.generateFrameNumbers('hero', { start: 12, end: 15 }),
         });
-
-        // setup keyboard input
-        this.keys = this.input.keyboard.createCursorKeys();
-        this.keys.HKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
 
 
         this.physics.add.collider(this.hero,this.monster, ()=>{

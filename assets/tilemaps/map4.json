@@ -121,7 +121,7 @@
          "margin":0,
          "name":"tileset1",
          "spacing":0,
-         "tilecount":64,
+         "tilecount":24,
          "tileheight":32,
          "tiles":[
                 {
